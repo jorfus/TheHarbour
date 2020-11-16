@@ -22,20 +22,19 @@ namespace TheHarbour
     /// </summary>
     public partial class MainWindow : Window
     {
-        AllBoats AnAllTheBoats { get; set; } = new AllBoats();
-        Random Rand = new Random();
-
+        AllBoats TheAllTheBoats { get; set; } = new AllBoats();
+        
         public MainWindow()
         {
             InitializeComponent();
-            topControl.DataContext = AnAllTheBoats.TheHorizontalBoatList;
-            leftControl.DataContext = AnAllTheBoats.TheLeftVerticalBoatList;
-            rightControl.DataContext = AnAllTheBoats.TheRightVerticalBoatList;
+            topControl.DataContext = TheAllTheBoats.TheHorizontalBoatList;
+            leftControl.DataContext = TheAllTheBoats.TheLeftVerticalBoatList;
+            rightControl.DataContext = TheAllTheBoats.TheRightVerticalBoatList;
         }
 
-        void buttong_Click(object sender, RoutedEventArgs e)
+        void Buttong_Click(object sender, RoutedEventArgs e)
         {
-            
+            TheAllTheBoats.NewBoats();
         }
     }
 }
