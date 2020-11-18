@@ -9,13 +9,19 @@
   <ItemGroup>
     <None Remove="Images\blue.png" />
     <None Remove="Images\darkGray.png" />
+    <None Remove="Images\freighter.png" />
+    <None Remove="Images\motorBoat.png" />
     <None Remove="Images\rowBoat.png" />
+    <None Remove="Images\sailBoat.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Images\blue.png" />
     <Resource Include="Images\darkGray.png" />
+    <Resource Include="Images\freighter.png" />
+    <Resource Include="Images\motorBoat.png" />
     <Resource Include="Images\rowBoat.png" />
+    <Resource Include="Images\sailBoat.png" />
   </ItemGroup>
 
 </Project>

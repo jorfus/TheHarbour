@@ -10,7 +10,8 @@ namespace TheHarbour.BackEnd
 
         public MotorBoat()
         {
-            TheBoat = new Uri(@"D:\Program\Plugg\.NET\TheHarbour\TheHarbour\Images\motorBoat.png");
+            TheBoat = new Uri("/Images/motorBoat.png", UriKind.Relative);
+            Type = "MotorBoat";
 
             RegistrationNumber = "M-" + RegistrationNumber;
 

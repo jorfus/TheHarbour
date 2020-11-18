@@ -11,16 +11,21 @@ using System.Windows.Media.Imaging;
 
 namespace TheHarbour.BackEnd
 {
-    class Boat
+    class Boat : INotifyPropertyChanged
     {
-        static Uri[] TheBoatImages { get; set; } = { new Uri(@"D:\Program\Plugg\.NET\TheHarbour\TheHarbour\Images\blue.png", UriKind.RelativeOrAbsolute),
-            new Uri(@"D:\Program\Plugg\.NET\TheHarbour\TheHarbour\Images\darkGray.png", UriKind.RelativeOrAbsolute)};
+        string _stayTimeMessage = "N/A"; 
+
+        static Uri[] TheBoatImages { get; set; } = { new Uri("/Images/blue.png", UriKind.Relative),
+            new Uri("/Images/darkGray.png", UriKind.Relative)};
         public Uri TheBoat { get; protected set; }
+        public string Type { get; protected set; }
         public string RegistrationNumber { get; protected set; }
-        public int Weight { get; protected set;}
+        public int Weight { get; protected set; }
         public int TopSpeed { get; protected set; }
-        public int StayTime { get; protected set; }
+        protected int StayTime { get; set; }
+        public string StayTimeMessage { get { return _stayTimeMessage; } private set { _stayTimeMessage = value; OnPropertyRaised("StayTimeMessage"); } }
         protected int Size { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
         protected static Random Rand { get; private set; } = new Random();
 
         public Boat()
@@ -37,13 +42,20 @@ namespace TheHarbour.BackEnd
         public Boat(bool emptyBoat)
         {
             if (emptyBoat)
+            {
                 TheBoat = TheBoatImages[0];
+                Type = "Vacant";
+            }
             else
                 TheBoat = TheBoatImages[1];
-            
+
             StayTime = 0;
         }
 
+        void OnPropertyRaised(string prop)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
         public int GetSize()
         {
             return Size;
@@ -56,15 +68,30 @@ namespace TheHarbour.BackEnd
             if (days == -1)
             {
                 StayTime += 1;
+                StayTimeMessage = "N/A";
                 return false;
             }
             else if (days > 0)
             {
                 StayTime = days;
+                StayTimeMessage = DepartureMessage();
                 return false;
             }
             else
                 return true;
+        }
+        string DepartureMessage()
+        {
+            switch (StayTime)
+            {
+                case 1:
+                    return "Today";
+                case 2:
+                    return "Tomorrow";
+                default:
+                    return $"{StayTime} days";
+                    
+            }
         }
     }
 }

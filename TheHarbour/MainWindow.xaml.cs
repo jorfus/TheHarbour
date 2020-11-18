@@ -27,9 +27,9 @@ namespace TheHarbour
         public MainWindow()
         {
             InitializeComponent();
-            topControl.DataContext = TheAllTheBoats.TheHorizontalBoatList;
-            leftControl.DataContext = TheAllTheBoats.TheLeftVerticalBoatList;
-            rightControl.DataContext = TheAllTheBoats.TheRightVerticalBoatList;
+            topList.DataContext = topControl.DataContext = TheAllTheBoats.TheHorizontalBoatList;
+            leftList.DataContext = leftControl.DataContext = TheAllTheBoats.TheLeftVerticalBoatList;
+            rightList.DataContext = rightControl.DataContext = TheAllTheBoats.TheRightVerticalBoatList;
         }
 
         void Buttong_Click(object sender, RoutedEventArgs e)
