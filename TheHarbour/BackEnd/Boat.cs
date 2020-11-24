@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace TheHarbour.BackEnd
 {
+    [Serializable]
     class Boat : INotifyPropertyChanged
     {
         string _stayTimeMessage = "N/A"; 
@@ -24,8 +25,10 @@ namespace TheHarbour.BackEnd
         public int TopSpeed { get; protected set; }
         protected int StayTime { get; set; }
         public string StayTimeMessage { get { return _stayTimeMessage; } private set { _stayTimeMessage = value; OnPropertyRaised("StayTimeMessage"); } }
-        protected int Size { get; set; }
+        public int Size { get; set; }
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
+        [field:NonSerialized]
         protected static Random Rand { get; private set; } = new Random();
 
         public Boat()
@@ -52,15 +55,7 @@ namespace TheHarbour.BackEnd
             StayTime = 0;
         }
 
-        void OnPropertyRaised(string prop)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-        public int GetSize()
-        {
-            return Size;
         
-        }
         public bool CountDownStay()
         {
             int days = StayTime -= 1;
@@ -92,6 +87,15 @@ namespace TheHarbour.BackEnd
                     return $"{StayTime} days";
                     
             }
+        }
+        void OnPropertyRaised(string prop)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+        public int GetSize()
+        {
+            return Size;
+
         }
     }
 }

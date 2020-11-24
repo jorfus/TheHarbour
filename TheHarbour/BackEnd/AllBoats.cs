@@ -7,15 +7,27 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Text;
 using TheHarbour.BackEnd;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace TheHarbour
 {
-    class AllBoats
+    [Serializable]
+    class AllBoats : INotifyPropertyChanged
     {
+        string _rejectedCounterMessage = "Rejected Vessels: 0";
+
         public ObservableCollection<Boat> TheHorizontalBoatList { get; private set; } = new ObservableCollection<Boat>() { new Boat(false) };
         public ObservableCollection<Boat> TheLeftVerticalBoatList { get; private set; } = new ObservableCollection<Boat>() { new Boat(false) };
         public ObservableCollection<Boat> TheRightVerticalBoatList { get; private set; } = new ObservableCollection<Boat>() { new Boat(false) };
+        int RejectedCounter { get; set; }
+        public string RejectedCounterMessage { get { return _rejectedCounterMessage; } private set { _rejectedCounterMessage = value; OnPropertyRaised("RejectedCounterMessage"); } }
+        [field:NonSerialized]
+        public event PropertyChangedEventHandler PropertyChanged;
+        [field:NonSerialized]
         static Random Rand = new Random();
+
+        public const string FileName = "saveData.bin";
 
         public AllBoats()
         {
@@ -30,27 +42,29 @@ namespace TheHarbour
                 TheRightVerticalBoatList.Add(new Boat(true));
         }
 
+
         public void NewBoats()
         {
-            for (int count = 0; count < 5; count++)
+            for (int count = 0; count < 15; count++)
             {
                 Boat aBoat = ChoiceOfBoat();
                 int newSize = aBoat.GetSize();
-                
+
                 bool success = ArriveBoat(aBoat, TheHorizontalBoatList, newSize, 64);
-                
+
                 if (success == false)
                     success = ArriveBoat(aBoat, TheLeftVerticalBoatList, newSize, 31);
 
                 if (success == false)
-                    ArriveBoat(aBoat, TheRightVerticalBoatList, newSize, 31);
+                    if (ArriveBoat(aBoat, TheRightVerticalBoatList, newSize, 31) == false)
+                        RejectedCounterMessage = $"Rejected Vessels: {RejectedCounter++}";
             }
 
             DepartBoats(TheHorizontalBoatList);
             DepartBoats(TheLeftVerticalBoatList);
             DepartBoats(TheRightVerticalBoatList);
         }
-        static Boat ChoiceOfBoat()
+        Boat ChoiceOfBoat()
         {
             switch (Rand.Next(0, 3 + 1))
             {
@@ -66,7 +80,7 @@ namespace TheHarbour
                     return null;
             }
         }
-        static bool ArriveBoat(Boat aBoat, ObservableCollection<Boat> aBoatList, int newSize, int dockLength)
+        bool ArriveBoat(Boat aBoat, ObservableCollection<Boat> aBoatList, int newSize, int dockLength)
         {
             int totalSize = 0;
             int emptySpaceCount = 0;
@@ -100,10 +114,10 @@ namespace TheHarbour
                     return true;
                 }
             }
-
+            
             return false;
         }
-        static void DepartBoats(ObservableCollection<Boat> aBoatList)
+        void DepartBoats(ObservableCollection<Boat> aBoatList)
         {
             List<Boat> departureList = aBoatList.Where(aBoat => aBoat.CountDownStay() == true).ToList();
 
@@ -116,6 +130,10 @@ namespace TheHarbour
                 for (int count = 0; count < size; count++)
                     aBoatList.Insert(insertIndex, new Boat(true));
             }
+        }
+        void OnPropertyRaised(string prop)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

@@ -5,7 +5,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <Style x:Key="ListViewWindow" TargetType="ListView">
-            <Setter Property="Height" Value="200"/>
+            <Setter Property="Height" Value="195"/>
             <Setter Property="Width" Value="auto"/>
             <Setter Property="Margin" Value="0,0,0,10"/>
         </Style>

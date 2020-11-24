@@ -4,6 +4,7 @@ using System.Text;
 
 namespace TheHarbour.BackEnd
 {
+    [Serializable]
     class Freighter : Boat
     {
         public int Load { get; private set; }

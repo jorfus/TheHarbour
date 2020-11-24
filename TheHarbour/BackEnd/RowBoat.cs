@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 
 namespace TheHarbour.BackEnd
 {
+    [Serializable]
     class RowBoat : Boat
     {
         public int MaxPassengers { get; private set; }
